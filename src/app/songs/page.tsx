@@ -2,8 +2,10 @@
 
 import { useQuery } from "@apollo/client/react";
 import { Plus } from "lucide-react";
-import { GET_SONGS } from "./constants";
 import Link from "next/link";
+
+import { GET_SONGS } from "@/lib/constants/songs.constants";
+
 
 export default function SongsPage() {
   const { data, loading, error } = useQuery(GET_SONGS);
