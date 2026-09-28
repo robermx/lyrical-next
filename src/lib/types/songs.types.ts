@@ -7,6 +7,10 @@ export type GetSongsData = {
   songs: Song[] | null;
 };
 
+export type GetSongData = {
+  song: Song | null;
+};
+
 export type CreateSongData = {
   addSong: Song | null;
 };

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import useDialog from "@/store/useDialog";
 
@@ -15,6 +15,17 @@ const CustomDialog = () => {
   } = useDialog();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submissionError, setSubmissionError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!openDialog) return;
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [openDialog]);
 
   if (!openDialog) return null;
 

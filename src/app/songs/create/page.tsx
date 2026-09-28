@@ -47,6 +47,7 @@ const SongCreate = () => {
       await createSong({
         variables: { title },
         refetchQueries: [{ query: GET_SONGS }],
+        awaitRefetchQueries: true,
       });
       reset();
       router.push("/songs");

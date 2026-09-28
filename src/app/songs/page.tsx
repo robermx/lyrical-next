@@ -56,19 +56,19 @@ export default function SongsPage() {
               className="flex items-center border-b py-2 px-4 border-indigo-400"
               key={song.id}
             >
-              <span className="flex-1">{song.title}</span>
+              <Link href={`/songs/${song.id}`} className="flex-1 hover:underline">{song.title}</Link>
               <div>
                 <Trash2Icon
                   onClick={() => confirmDelete(song.id, song.title)}
                   size={20}
-                  className="text-red-400 cursor-pointer"
+                  className="text-red-400 cursor-pointer hover:text-red-700"
                 />
               </div>
             </li>
           ))}
         </ul>
 
-        <Link href={`/song-create`} className="mt-auto self-end pb-6">
+        <Link href={`/songs/create`} className="mt-auto self-end pb-6">
           <Plus size={42} className="bg-blue-500 p-1 rounded-full" />
         </Link>
       </main>
