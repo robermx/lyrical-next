@@ -3,9 +3,11 @@
 import { useRouter } from "next/navigation";
 import { useMutation } from "@apollo/client/react";
 import { Controller, useForm } from "react-hook-form";
+import { ArrowBigLeft, Home } from "lucide-react";
 
 import { CREATE_SONG, GET_SONGS } from "@/lib/constants/songs.constants";
 import { IFormInput } from "@/lib/interfaces/form-input.interface";
+import Link from "next/link";
 
 const SongCreate = () => {
   const router = useRouter();
@@ -22,15 +24,19 @@ const SongCreate = () => {
   });
 
   const [createSong, { loading, error }] = useMutation(CREATE_SONG, {
-    update(cache, { data }) {
-      const createdSong = data?.addSong;
+    /** onCompleted data */
+    // onCompleted: (data) => {
+    //   console.log(data)
+    // }
 
-      if (!createdSong) return;
-
-      cache.updateQuery({ query: GET_SONGS }, (current) => ({
-        songs: [...(current?.songs ?? []), createdSong],
-      }));
-    },
+    /** updated cache */
+    // update(cache, { data }) {
+    //   const createdSong = data?.addSong;
+    //   if (!createdSong) return;
+    //   cache.updateQuery({ query: GET_SONGS }, (current) => ({
+    //     songs: [...(current?.songs ?? []), createdSong],
+    //   }));
+    // },
   });
 
   const onSubmit = async ({ songTitle }: IFormInput) => {
@@ -40,6 +46,7 @@ const SongCreate = () => {
     try {
       await createSong({
         variables: { title },
+        refetchQueries: [{ query: GET_SONGS }],
       });
       reset();
       router.push("/songs");
@@ -50,6 +57,20 @@ const SongCreate = () => {
 
   return (
     <main className="flex flex-col gap-6 p-6 w-4xl mx-auto h-dvh min-h-80">
+      <div className="flex gap-3">
+        <Link href={`/songs`}>
+          <ArrowBigLeft
+            size={32}
+            className="text-blue-400 bg-blue-500 p-1 rounded-lg"
+          />
+        </Link>
+        <Link href={`/`}>
+          <Home
+            size={32}
+            className="text-blue-400 bg-blue-500 p-1 rounded-lg"
+          />
+        </Link>
+      </div>
       <h2 className="text-2xl">Create a New Song</h2>
       <form onSubmit={handleSubmit(onSubmit)} className="flex gap-6">
         <div className="flex-1 relative">

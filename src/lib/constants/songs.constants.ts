@@ -3,6 +3,8 @@ import { gql, TypedDocumentNode } from "@apollo/client";
 import {
   CreateSongData,
   CreateSongVariables,
+  DeleteSongData,
+  DeleteSongVariable,
   GetSongsData,
 } from "@/lib/types/songs.types";
 
@@ -21,6 +23,18 @@ export const CREATE_SONG: TypedDocumentNode<
 > = gql`
   mutation CreateSong($title: String!) {
     addSong(title: $title) {
+      id
+      title
+    }
+  }
+`;
+
+export const DELETE_SONG: TypedDocumentNode<
+  DeleteSongData,
+  DeleteSongVariable
+> = gql`
+  mutation DeleteSong($id: ID) {
+    deleteSong(id: $id) {
       id
       title
     }

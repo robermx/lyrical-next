@@ -14,3 +14,11 @@ export type CreateSongData = {
 export type CreateSongVariables = {
   title: string;
 };
+
+export type DeleteSongData = {
+  deleteSong: Song | null;
+};
+
+export type DeleteSongVariable = {
+  id: string;
+};

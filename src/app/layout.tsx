@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
+
 import { ApolloWrapper } from "@/components/providers/apollo-provider";
+import CustomDialog from "@/components/dialogs/CustomDialog";
 import { RootLayoutProps } from "@/lib/types/layout.types";
+import "./globals.css";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,6 +30,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
     >
       <body className="min-h-full flex flex-col">
         <ApolloWrapper>{children}</ApolloWrapper>
+        <CustomDialog />
       </body>
     </html>
   );
