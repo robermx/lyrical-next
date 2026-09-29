@@ -1,14 +1,23 @@
+export type Lyric = {
+  content: string;
+  id: string
+  likes: number
+};
+
 export type Song = {
   id: string;
   title: string;
+  lyrics: Lyric[]
 };
+
+
 
 export type GetSongsData = {
   songs: Song[] | null;
 };
 
 export type GetSongData = {
-  song: Song | null;
+  song: Song
 };
 
 export type CreateSongData = {
@@ -25,4 +34,13 @@ export type DeleteSongData = {
 
 export type DeleteSongVariable = {
   id: string;
+};
+
+export type AddLyricToSongData = {
+  addLyricToSong: Song | null;
+};
+
+export type AddLyricToSongVariable = {
+  content: string;
+  songId: string;
 };

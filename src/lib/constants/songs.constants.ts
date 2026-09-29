@@ -1,6 +1,8 @@
 import { gql, TypedDocumentNode } from "@apollo/client";
 
 import {
+  AddLyricToSongData,
+  AddLyricToSongVariable,
   CreateSongData,
   CreateSongVariables,
   DeleteSongData,
@@ -23,15 +25,20 @@ export const GET_SONG: TypedDocumentNode<GetSongData> = gql`
     song(id: $id) {
       id
       title
+      lyrics {
+        id
+        content
+        likes
+      }
     }
   }
 `;
 
-export const CREATE_SONG: TypedDocumentNode<
+export const ADD_SONG: TypedDocumentNode<
   CreateSongData,
   CreateSongVariables
 > = gql`
-  mutation CreateSong($title: String!) {
+  mutation AddSong($title: String!) {
     addSong(title: $title) {
       id
       title
@@ -47,6 +54,22 @@ export const DELETE_SONG: TypedDocumentNode<
     deleteSong(id: $id) {
       id
       title
+    }
+  }
+`;
+
+export const ADD_LYRIC_TO_SONG: TypedDocumentNode<
+  AddLyricToSongData,
+  AddLyricToSongVariable
+> = gql`
+  mutation AddLyricToSong($content: String!, $songId: ID!) {
+    addLyricToSong(content: $content, songId: $songId) {
+      id
+      lyrics {
+        id
+        content
+        likes
+      }
     }
   }
 `;

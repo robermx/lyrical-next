@@ -9,7 +9,22 @@ import useDialog from "@/store/useDialog";
 
 export default function SongsPage() {
   const { data, loading, error } = useQuery(GET_SONGS);
-  const [deleteSong] = useMutation(DELETE_SONG);
+  const [deleteSong] = useMutation(DELETE_SONG, {
+    update(cache, { data }) {
+      const deletedId = data?.deleteSong?.id;
+
+      if (!deletedId) return;
+
+      cache.updateQuery({ query: GET_SONGS }, (current) => {
+        if (!current) return current;
+
+        return {
+          ...current,
+          songs: (current.songs ?? []).filter((song) => song.id !== deletedId),
+        };
+      });
+    },
+  });
   const setDialog = useDialog((state) => state.setDialog);
 
   if (loading) return <p>Loading songs...</p>;
@@ -19,8 +34,8 @@ export default function SongsPage() {
   const handleDelete = async (id: string) => {
     await deleteSong({
       variables: { id },
-      refetchQueries: [{ query: GET_SONGS }],
-      awaitRefetchQueries: true,
+      // refetchQueries: [{ query: GET_SONGS }],
+      // awaitRefetchQueries: true,
     });
   };
 
@@ -56,7 +71,12 @@ export default function SongsPage() {
               className="flex items-center border-b py-2 px-4 border-indigo-400"
               key={song.id}
             >
-              <Link href={`/songs/${song.id}`} className="flex-1 hover:underline">{song.title}</Link>
+              <Link
+                href={`/songs/${song.id}`}
+                className="flex-1 hover:underline"
+              >
+                {song.title}
+              </Link>
               <div>
                 <Trash2Icon
                   onClick={() => confirmDelete(song.id, song.title)}

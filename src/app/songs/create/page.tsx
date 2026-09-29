@@ -5,7 +5,7 @@ import { useMutation } from "@apollo/client/react";
 import { Controller, useForm } from "react-hook-form";
 import { ArrowBigLeft, Home } from "lucide-react";
 
-import { CREATE_SONG, GET_SONGS } from "@/lib/constants/songs.constants";
+import { ADD_SONG, GET_SONGS } from "@/lib/constants/songs.constants";
 import { IFormInput } from "@/lib/interfaces/form-input.interface";
 import Link from "next/link";
 
@@ -23,20 +23,23 @@ const SongCreate = () => {
     },
   });
 
-  const [createSong, { loading, error }] = useMutation(CREATE_SONG, {
+  const [createSong, { loading, error }] = useMutation(ADD_SONG, {
     /** onCompleted data */
     // onCompleted: (data) => {
     //   console.log(data)
     // }
 
-    /** updated cache */
-    // update(cache, { data }) {
-    //   const createdSong = data?.addSong;
-    //   if (!createdSong) return;
-    //   cache.updateQuery({ query: GET_SONGS }, (current) => ({
-    //     songs: [...(current?.songs ?? []), createdSong],
-    //   }));
-    // },
+    /** updated cache, no server calls */
+    update(cache, { data }) {
+      const createdSong = data?.addSong;
+
+      if (!createdSong) return;
+
+      cache.updateQuery({ query: GET_SONGS }, (current) => {
+        if (!current) return current;
+        return { ...current, songs: [...(current?.songs ?? []), createdSong] };
+      });
+    },
   });
 
   const onSubmit = async ({ songTitle }: IFormInput) => {
@@ -46,8 +49,9 @@ const SongCreate = () => {
     try {
       await createSong({
         variables: { title },
-        refetchQueries: [{ query: GET_SONGS }],
-        awaitRefetchQueries: true,
+        /** another call from server */
+        // refetchQueries: [{ query: GET_SONGS }],
+        // awaitRefetchQueries: true,
       });
       reset();
       router.push("/songs");
