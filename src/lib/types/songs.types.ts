@@ -1,23 +1,25 @@
-export type Lyric = {
-  content: string;
-  id: string
-  likes: number
+type TypeName = {
+  __typename?: string;
 };
 
-export type Song = {
+export type Lyric = TypeName & {
+  id: string;
+  likes: number;
+  content?: string;
+};
+
+export type Song = TypeName & {
   id: string;
   title: string;
-  lyrics: Lyric[]
+  lyrics: Lyric[];
 };
-
-
 
 export type GetSongsData = {
   songs: Song[] | null;
 };
 
 export type GetSongData = {
-  song: Song
+  song: Song;
 };
 
 export type CreateSongData = {
@@ -37,10 +39,18 @@ export type DeleteSongVariable = {
 };
 
 export type AddLyricToSongData = {
-  addLyricToSong: Song | null;
+  addLyricToSong: Lyric | null;
 };
 
-export type AddLyricToSongVariable = {
+export type AddLyricToSongVariables = {
   content: string;
   songId: string;
+};
+
+export type LikeLyricsData = {
+  likeLyric: Lyric | null;
+};
+
+export type LikeLyricVariables = {
+  id: string;
 };

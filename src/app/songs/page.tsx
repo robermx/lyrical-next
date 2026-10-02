@@ -8,7 +8,9 @@ import { DELETE_SONG, GET_SONGS } from "@/lib/constants/songs.constants";
 import useDialog from "@/store/useDialog";
 
 export default function SongsPage() {
+  /** From graphql sql template */
   const { data, loading, error } = useQuery(GET_SONGS);
+
   const [deleteSong] = useMutation(DELETE_SONG, {
     update(cache, { data }) {
       const deletedId = data?.deleteSong?.id;
@@ -29,7 +31,7 @@ export default function SongsPage() {
 
   if (loading) return <p>Loading songs...</p>;
   if (error) return <p>Error: {error.message}</p>;
-  if (!data) return <p>Songs not found.</p>;
+  if (!data?.songs) return <p>Songs not found.</p>;
 
   const handleDelete = async (id: string) => {
     await deleteSong({

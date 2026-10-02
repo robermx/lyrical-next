@@ -29,7 +29,7 @@ const SongCreate = () => {
     //   console.log(data)
     // }
 
-    /** updated cache, no server calls */
+    /** updated cache, not additional calls */
     update(cache, { data }) {
       const createdSong = data?.addSong;
 
